@@ -8,6 +8,7 @@ async function findNickname(nickname: string) {
     select: {
       id: true,
       nickname: true,
+      password: true,
     },
   })
   return userNickname

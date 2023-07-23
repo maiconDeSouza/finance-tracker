@@ -3,7 +3,25 @@ import { dbPrisma } from '../prisma/usersPrisma'
 async function findNickname(nickname: string) {
   const db = await dbPrisma()
 
-  const userNickname = db.findNickname(nickname)
+  const returNickname = await db.findNickname(nickname)
+
+  if (returNickname) {
+    const { id, nickname: nick } = returNickname
+    const userNickname = {
+      id,
+      nickname: nick,
+    }
+
+    return userNickname
+  }
+
+  return null
+}
+
+async function findNicknamePassword(nickname: string) {
+  const db = await dbPrisma()
+
+  const userNickname = await db.findNickname(nickname)
 
   return userNickname
 }
@@ -20,5 +38,5 @@ async function createUsers(
   return newUsers
 }
 export async function userRepositories() {
-  return { findNickname, createUsers }
+  return { findNickname, findNicknamePassword, createUsers }
 }

@@ -8,6 +8,7 @@ async function create(
   password: string,
   repeatPassword: string,
 ) {
+  const repositories = await userRepositories()
   if (password !== repeatPassword) {
     throw new AppError(
       'Unexpected error on the server, please try again or try later.',
@@ -17,7 +18,6 @@ async function create(
 
   const hashPassword = await utilsHashPassword(password)
 
-  const repositories = await userRepositories()
   const userNickname = await repositories.findNickname(nickname)
 
   if (userNickname) {
@@ -35,6 +35,24 @@ async function create(
   return newUsers
 }
 
+async function login(nickname: string, password: string) {
+  const repositories = await userRepositories()
+
+  const loginHashPassword = await utilsHashPassword(password)
+
+  const user = await repositories.findNicknamePassword(nickname)
+
+  if (!user) {
+    throw new AppError('Invalid nickname or password.', 401)
+  }
+
+  if (user.password !== loginHashPassword) {
+    throw new AppError('Invalid nickname or password.', 401)
+  }
+
+  return user.id
+}
+
 export async function usersServices() {
-  return { create }
+  return { create, login }
 }
