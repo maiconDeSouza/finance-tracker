@@ -33,6 +33,7 @@ model FinancialControl {
 
   Transaction Transaction[]
 
+  @@unique([name, user_id])
   @@map("fiancial_controls")
 }
 
