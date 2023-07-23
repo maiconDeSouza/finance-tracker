@@ -3,6 +3,8 @@ import { usersRoutes } from '../http/routes/usersRoutes'
 import { env } from './env'
 import fastifyJwt from '@fastify/jwt'
 import { financialControlRoutes } from '../http/routes/financialControlRoutes'
+import { transactionsRoutes } from '../http/routes/transactionsRoutes'
+import { balanceRoutes } from '../http/routes/balanceRoutes'
 
 const app = fastify()
 
@@ -18,6 +20,14 @@ app.register(usersRoutes, {
 })
 
 app.register(financialControlRoutes, {
+  prefix,
+})
+
+app.register(transactionsRoutes, {
+  prefix,
+})
+
+app.register(balanceRoutes, {
   prefix,
 })
 
